@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>ch05 index04.html 파일</h1>
+    <div><button id="order-button">주문하기</button></div>
+    <script>
+      // 1. 함수 선언문과 콜백 함수
+      // 어떤 계산을 할지는 넘겨 받은 함수(callback)가 정한다로 설계하는 함수
+
+      function calculate(a, b, callback) {
+        console.log("계산을 시작합니다.");
+        const result = callback(a, b);
+        console.log("결과: " + result);
+      }
+      // 두 수를 받아서 덧셈하는 연산
+      const add = (x, y) => x + y;
+      const multiply = (x, y) => x * y;
+      calculate(3, 4, add); //7
+      calculate(3, 4, multiply); //12
+      // 즉, 콜백 함수는 함수의 인수로 들어가는 함수를 말한다.
+      // 하나의 함수를 설계해서 필요한 함수를 인수로 활용한다.
+
+      //함수를 변수에 담지 않고 바로 그 자리에서 넘겨주어도 된다.(더 많이 사용된다.)
+      calculate(10, 2, (x, y) => x - y); //8
+
+      //2. 시간이 지나면 실행되는 setTimeout
+      // 2초 뒤에 이 함수가 실행됨
+      setTimeout(function () {
+        console.log("2초가 지나서 호출됨: 즉, 콜백 실행");
+        //alert("콜백 콜백 콜백");
+      }, 2000);
+
+      // 4. 사용자가 행동하면 콜백 함수를 실행시킬 수 있다.
+      const orderbutton = document.getElementById("order-button");
+      console.log(orderbutton);
+      orderbutton.addEventListener("click", function () {
+        console.log("주문 버튼이 클림됨");
+        alert("주문이 접수되었습니다.");
+      });
+
+      console.log("2번 문제");
+      function show(msg) {
+        //return msg;
+        console.log(msg);
+      }
+      const r = show("호호");
+      console.log(r);
+
+      function run(callback) {
+        console.log("시작");
+        callback();
+      }
+      run(() => {
+        console.log("콜백");
+      });
+      console.log("4번 문제");
+      const makeUser = (name) => {
+        name: name;
+        return name;
+      };
+      console.log(makeUser("홍길동"));
+    </script>
+  </body>
+</html>

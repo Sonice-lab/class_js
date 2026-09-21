@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>ch03 index03.html 파일</h1>
+
+    <button onclick="sayHello()">클릭미</button>
+    <script>
+      console.log("---------1. var의 호이스팅-------");
+
+      // console.log(abc); // -> 선언한 적없음 오류발생
+      // Uncaught ReferenceError: abc is not defined
+      console.log(greeting); //undefined가 나온다.
+      //자바스크립트 엔진이 실행 전에 var greeting;만 맨 위로 끌어올렸기 때문이다.
+      var greeting = "안녕";
+      console.log(greeting); //"안녕" 값이 정상적으로 출력
+
+      console.log("---------2. let, const의 호이스팅 TDZ(temporal dead zone)-------");
+      // let과 const도 선언이 끌어올려진다.
+      //하지만 선언 줄에 도착하기 전까지는 사용이 금지된다.
+      // 이 금지 구간을 TDZ(temporal dead zone), 일시적 사각 지대라고 한다.
+
+      //console.log(welcome); //Uncaught ReferenceError: Cannot access 'welcome'
+      // //////////TDZ구간 - 오류 발생//////////
+      const welcome = "반가워";
+
+      console.log("---------3. 함수 선언문의 호이스팅-------");
+
+      // 함수 선언문이란? 문장의 시작에 function이 오고, 이름이 붙음
+      //특징: 독립된 하나의 문장 > 즉, 함수 선언문은 선언부 전체(몸까지)가 끌어올려진다.
+      // 그래서 함수를 아래에 써 놓고 위에서 호출해도 잘 동작한다.
+      //호이스팅이 무슨 영향이 있을까?
+      sayHello(); // 안녕하세요가 잘 호출됨!
+      function sayHello() {
+        console.log("안녕하세요.");
+      }
+
+      console.log("---------4. 함수 표현식은 호이스팅 되지 않는다.-------");
+      // 함수 표현식: 값이 오는 자리에 놓인 function을 의미한다.
+
+      // 자바스크립트에서는 함수를 값으로 저장해둘 수 있다.
+      sayBye(); // 이 위치일 경우 오류 발생! > 끌어올려지지 않는다.(함수표현식)
+      // 함수 자체를 변수에 담기때문에 TDZ가 발생한 것과 같은 의미가 된다.
+
+      const sayBye = function () {
+        console.log("안녕히가세요.");
+      }; // 오류 발생: index03.html:47 Uncaught ReferenceError: Cannot access 'sayBye'
+      // before initialization at index03.html:47:7
+    </script>
+  </body>
+</html>
