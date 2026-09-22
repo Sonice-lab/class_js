@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>ch07 index05.html 파일</h1>
+    <script>
+      // 1. 중간이 비어있는 데이터가 있다고 가정했을 때
+      const post = {
+        title: "첫 번째 글",
+        writer: null, //탈퇴한 회원이라 작성자 정보가 없음
+      };
+
+      //일반적 접근 > 오류 발생, 코드 멈춤
+      //console.log(post.writer.name);
+      // // nullpointerexception Uncaught TypeError: Cannot read properties of null (reading 'name')
+
+      console.log("실행 결과 확인");
+
+      //옵셔널 체이닝: 에러없이 undefined를 돌려주고 조용히 넘어간다.
+      console.log(post.writer?.name); //undefined
+      post.age = 10;
+
+      console.log("여러 단계 처리, 배열과 함수에도 적용 가능");
+      const order = {
+        id: 1001,
+        customer: {
+          name: "이하늘",
+          address: null,
+        },
+        items: null,
+      };
+
+      console.log(order.customer?.name);
+      console.log(order.customer?.address?.city);
+
+      //배열에서 쓸 때는 ?/[] 형태이다.
+      console.log(order.items?.[0]); //없기때문에 undefined
+
+      //함수 호출에 쓸 때는 ?.() 형태
+      console.log(order.customer?.phone?.trim()); //undefined
+
+      console.log("실무에서는 ?. 과 ?? 보통 함께 많이 사용한다.");
+
+      const writerName = post.writer?.name ?? "탈퇴한 회원";
+      console.log(writerName); //탈퇴한 회원
+
+      const cityName = order.customer?.address?.city ?? "주소 미입력";
+      console.log(cityName); // 주소 미입력
+
+      const user = { name: "김민수" };
+      const count = 3;
+      console.log(`${user.name}님 장바구니 ${count * 2}개`);
+    </script>
+  </body>
+</html>

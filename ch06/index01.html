@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>ch 06 index01.html 파일</h1>
+    <script>
+      console.log("--1. 메서드로 호출하면 this는 점 앞의 객체이다.--");
+
+      const cat = {
+        name: "나비",
+        name2: "나비2",
+        introduce: function () {
+          console.log("제 이름은 " + this.name2 + "입니다.");
+        },
+      };
+      cat.introduce(); // 점 앞에 있는 cat이 this이다.
+
+      console.log("--2. 같은 함수를 다른 객체에 붙이면 this도 바뀐다.--");
+      const dog = {
+        name: "초코",
+        introduce: cat.introduce, //함수 자체를 불러온다. cat의 함수를 그대로 전달받음
+      };
+      dog.introduce(); // 제 이름은 초코입니다. > 여기서 this는 누구일까?
+      // 점 앞에 있는 dog에 this이다.
+
+      console.log("--3. 그냥 호출하면 this는 window 객체이다.--");
+
+      const alone = cat.introduce; //함수 호출이 아닌 저장함으로써 변수 할당
+      alone(); //제 이름은 입니다.
+      // 실제 함수의 동작은 cat의 this.name이라서 <--- this(window)를 가리킨다.
+      //주의! window.name 속성은 특수한 변수라서 미리 선점되어있음 > 빈 문자열 출력
+      // 원래는 undefined 가 출력됨
+
+      console.log("--4. 만약 new로 호출할 경우 this는 새로 만들어지는 객체를 가리킨다.--");
+
+      function Member(name) {
+        this.name = name;
+      } //객체 리터럴과 다르게 여러개를 찍어낼 수 있다.
+
+      const member1 = new Member("홍길동");
+      console.log(member1.name); // 홍길동
+
+      // 실험 1. 만약 new라는 키워드를 사용하지 않도 호출한다면?
+      const member2 = Member("이순신"); // new를 빠뜨리면 window 객체를 가리킨다.
+      console.log(member2); //undefined
+      console.log(typeof member2); // undefined
+      console.log(window.name); // 이순신
+      // new를 빠뜨리면 점이 없는 호출이 되어짐. 즉, 여기서 this는 window가 되어버림!
+      // 실제 가지고 있는 멤버 변수 window의 멤버변수 name에
+      // 내가 방금 넣은 인수값 '이순신'이 담기는 구조가 된다.
+      //this는 어느 시점 누가 호출하느냐에 따라 무엇을 가리키는 것인지 달라진다.
+
+      // 새로고침을 해도 값이 남는 특수한 속성이 있다.
+      // 혹시 다른 코드에 영향을 줄 수 있기 때문에
+      // 이 문서에 한하여 아래와 같이 초기화 처리를 한다.
+      window.name = "";
+    </script>
+  </body>
+</html>
