@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      #detail {
+        display: none;
+      }
+
       .card {
         border: 1px solid #ccc;
         padding: 10px;
         margin: 10px 0;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -37,9 +42,15 @@
 
       // 2. 상품 하나를 카드 HTML로 바꾸는 함수
       function makeCard(product) {
+        const stockText =
+          product.stock === 0
+            ? '<span style="color: red; font-weight: bold;">품절</span>'
+            : `${product.stock}개`;
+
+        // 나중에 클릭 이벤트를 위해 카드의 고유 id를 data-id 속성으로 넣어주기
         return `
-        <div class="card">
-        <strong>${product.name}</strong> - ${product.price} 원 (${product.stock}개) 
+        <div class="card" data-id="${product.id}">
+        <strong>${product.name}</strong> - ${product.price} 원 (${product.stock}개)
         </div>
         `;
       }
@@ -57,7 +68,7 @@
         // 랜더링이 일어나는 곳
         productList.innerHTML = matched.map(makeCard).join("");
         countSpan.textContent = `${matched.length}개`;
-        //키보드를 클릭하면 하단에 그 클릭한 해당 키보드의 정보가 나타난다.
+        //키보드를 클릭하면 하단에 그 클릭한 해당 상품의 정보가 나타난다.
         detail.textContent = `${products.name} / ${products.price}원 / 재고 ${products.stock}개`;
 
         //결과가 없을 경우
@@ -67,14 +78,40 @@
         // 빈문자열 처리
       }
 
+      // 초기 랜더링
       render("");
 
-      //이벤트 리스너 등록
+      //검색 이벤트 리스너 등록
       searchInput.addEventListener("input", (event) => {
         render(event.currentTarget.value);
+        detail.style.display = "none";
       });
 
-      //detail.addEventListener("detail", (detail) => {});
+      //4. 클릭 이벤트 리스너 등록
+      productList.addEventListener("click", (event) => {
+        //클릭된 요소가 .card 클래스를 가지고 있거나, 그 자식 요소인지 확인
+        const card = event.target.closest(".card");
+
+        //클릭된 곳이 카드가 아니라면 함수를 종료
+        if (!card) return;
+
+        // 카드에 심어두었던 data-id 값을 가져온다. (문자열이므로 숫자로 변환)
+        const productId = parseInt(card.dataset.id, 10);
+
+        //products 배열에서 해당 id를 가진 상품 객체를 찾는다.
+        const clickedProduct = products.find((p) => p.id === productId);
+
+        // 찾은 상품의 정보를 하단 detail영역에 표시
+        if (clickedProduct) {
+          // 하단 상세 정보 영역에도 재고가 0이면 '품절'로 표시되도록 처리
+          const detailStockText = clickedProduct.stock === 0 ? "품절" : `재고 ${clickedProduct.stock}개`;
+
+          detail.textContent = `${clickedProduct.name} / ${clickedProduct.price.toLocaleString()}원 / ${detailStockText}`;
+
+          // 숨겨져있던 detail 영역을 화면에 표시한다.
+          detail.style.display = "block";
+        }
+      });
     </script>
   </body>
 </html>

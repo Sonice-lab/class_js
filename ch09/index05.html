@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      img {
+        width: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>이미지 토글</h1>
+    <h3>방법 1: HTML 속성에 직접 쓰기</h3>
+    <div class="row">
+      <img src="img2.png" alt="" id="photo1" />
+      <button onclick="TogglePhoto1()">이미지토글</button>
+      <button id="toggle-btn">이미지토글2</button>
+    </div>
+
+    <script>
+      let isFirst = true;
+      function TogglePhoto1() {
+        // 지역 변수 선언
+        const photoEl = document.getElementById("photo1");
+        if (isFirst) {
+          photoEl.src = "img1.png";
+        } else {
+          photoEl.src = "img2.png";
+        }
+        isFirst = !isFirst; // true면 false, false면 true로 뒤집는다.
+      }
+
+      console.log("방법 2 : addEventListener로 처리");
+
+      document.getElementById("toggle-btn").addEventListener("click", function () {
+        const photoEl = document.getElementById("photo1");
+
+        if (isFirst) {
+          photoEl.src = "img1.png";
+        } else {
+          photoEl.src = "img2.png";
+        }
+        isFirst = !isFirst; // true면 false, false면 true로 뒤집는다.
+      });
+    </script>
+  </body>
+</html>

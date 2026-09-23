@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>ch 09 index01.html 파일</h1>
+    <p>첫번째 문단</p>
+    <p>두번째 문단</p>
+
+    <script>
+      // 현재 메모리에 올라간 요소들
+      //1.document는 DOM 트리의 뿌리(Root)이다.
+      // window.document에서 window는 생략할 수 있다.
+      console.log(document); // 콘솔에 HTML전체가 트리 모양으로 확인 가능
+      console.log(document.body); //body 부분만 확인 가능
+
+      //2. 트리는 부모와 자식 관계로 이어져 있다.
+      console.log(document.body.children[0]); //h1요소
+
+      //3. 자바스크립트로 DOM을 바꾸면 화면이 바로 바뀐다.
+      document.body.children[1].textContent = "자바스크립트가 바꾼 문단";
+    </script>
+  </body>
+</html>

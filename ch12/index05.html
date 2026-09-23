@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      li {
+        display: inline-block; /* 1. 크기를 가질 수 있도록 변경 */
+        width: 80px; /* 2. 가로 크기 지정 */
+        height: 80px; /* 3. 세로 크기를 가로와 동일하게 지정 */
+      }
+      ul {
+        display: flex;
+      }
+      .item {
+        border: 0px solid black;
+        padding: 10px;
+        margin: 10px;
+        background-color: aqua;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ch12 index05.html - 요소 동적 추가</h1>
+
+    <div>
+      <button id="btn1">아이템 추가</button>
+    </div>
+
+    <ul id="parent">
+      <li class="item">아이템1</li>
+      <li class="item">아이템2</li>
+      <li class="item">아이템3</li>
+    </ul>
+
+    <script>
+      // 1. 요소 부터 찾아보기
+      const btn1 = document.getElementById("btn1");
+      const item1 = document.getElementById("item1");
+      const item2 = document.getElementById("item2");
+      const item3 = document.getElementById("item3");
+
+      // 전역 변수를 선언.
+      //초기값은 4이다.
+      let count = 4;
+      // 콜백 함수 안에서 ++를 한다.(변해야하는 수이므로 let)
+      // 그 변수를 안에 집어넣는다.
+
+      btn1.addEventListener("click", () => {
+        //요소의 생성
+        const itemLi = document.createElement("li");
+        itemLi.textContent = "아이템" + count++;
+        itemLi.classList.add("item");
+        const ulEl = document.getElementById("parent");
+        ulEl.append(itemLi);
+      });
+    </script>
+  </body>
+</html>
