@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>몽글몽글 날씨 앱 - 아기자기 배경</title>
+    <style>
+      body {
+        font-family: "Nunito", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+        background-color: #f4f0fa;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .rainbow {
+        position: absolute;
+        top: -100px;
+        left: -100px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: conic-gradient(
+          from 180deg,
+          #bdf2cc 0% 12.5%,
+          #dcd3ff 12.5% 25%,
+          #eae2ff 25% 37.5%,
+          #9d88cc 37.5% 50%,
+          #fcfbff 50% 62.5%,
+          #fff0f0 62.5% 75%,
+          #ff6b6b 75% 87.5%,
+          #bdf2cc 87.5% 100%
+        );
+        opacity: 0.1;
+        transform: rotate(-45deg);
+        z-index: -1;
+      }
+      .cloud {
+        position: absolute;
+        background-color: #ffffff;
+        border-radius: 50%;
+        opacity: 0.6;
+        z-index: -1;
+        animation: floatClouds 20s linear infinite;
+      }
+      .cloud-1 {
+        width: 100px;
+        height: 100px;
+        top: 10%;
+        left: 15%;
+      }
+      .cloud-2 {
+        width: 150px;
+        height: 150px;
+        top: 30%;
+        right: 10%;
+        animation-delay: -5s;
+      }
+      .cloud-3 {
+        width: 80px;
+        height: 80px;
+        bottom: 20%;
+        left: 20%;
+        animation-delay: -10s;
+      }
+      .cloud-4 {
+        width: 120px;
+        height: 120px;
+        bottom: 40%;
+        right: 25%;
+        animation-delay: -15s;
+      }
+      @keyframes floatClouds {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(50px);
+        }
+      }
+      .airplane {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: #fcfbff;
+        clip-path: polygon(10% 80%, 90% 80%, 80% 90%, 20% 90%);
+        top: 50%;
+        right: -50px;
+        z-index: -1;
+        animation: flyAirplane 10s linear infinite;
+      }
+      @keyframes flyAirplane {
+        0% {
+          transform: translateX(0) translateY(0);
+        }
+        100% {
+          transform: translateX(-150vw) translateY(100px);
+        }
+      }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background-color: #ffffff;
+        padding: 35px 25px;
+        border-radius: 35px;
+        box-shadow: 0 15px 35px rgba(175, 155, 220, 0.15);
+        text-align: center;
+        position: relative;
+        transform: translateY(-10vh);
+      }
+      h2 {
+        color: #9d88cc;
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-size: 24px;
+      }
+      .search-box {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+      }
+      input {
+        flex: 1;
+        padding: 12px 20px;
+        border: 2px solid #eae2ff;
+        border-radius: 30px;
+        outline: none;
+        font-size: 15px;
+        background-color: #fcfbff;
+        transition: all 0.3s ease;
+      }
+      input:focus {
+        border-color: #c4b5fd;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(196, 181, 253, 0.3);
+      }
+      button {
+        padding: 12px 24px;
+        background-color: #bdf2cc;
+        color: #2e6b3c;
+        border: none;
+        border-radius: 30px;
+        font-weight: bold;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(189, 242, 204, 0.4);
+      }
+      button:hover {
+        background-color: #a3e8b5;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(163, 232, 181, 0.5);
+      }
+      .info-box {
+        background: #f2fcf4;
+        padding: 20px;
+        border-radius: 25px;
+        margin-bottom: 15px;
+        text-align: left;
+        box-shadow: 0 5px 15px rgba(160, 220, 180, 0.15);
+      }
+      .info-box h3 {
+        color: #8c78be;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 2px dashed #dcd3ff;
+        padding-bottom: 10px;
+        font-size: 18px;
+      }
+      .info-box p {
+        color: #555;
+        margin: 10px 0;
+        font-size: 15px;
+      }
+      .info-box p span {
+        font-weight: bold;
+        color: #333;
+      }
+      .error {
+        background-color: #fff0f0;
+        color: #ff6b6b;
+        padding: 15px;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        display: none;
+        font-size: 14px;
+      }
+      #resultArea {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 배경 요소들 -->
+    <div class="rainbow"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="airplane"></div>
+
+    <div class="container">
+      <h2>☁️ 몽글몽글 날씨 검색</h2>
+
+      <!-- 검색 영역 -->
+      <div class="search-box">
+        <input type="text" id="cityInput" placeholder="도시명 (예: 서울, 도쿄, Seoul)" />
+        <button id="searchBtn">검색</button>
+      </div>
+
+      <!-- 오류 메시지 영역 -->
+      <div id="errorMsg" class="error"></div>
+
+      <!-- 결과 화면 영역 -->
+      <div id="resultArea">
+        <div class="info-box">
+          <h3>📍 위치 정보</h3>
+          <p>도시: <span id="cityNameDisplay">-</span></p>
+          <p>위도: <span id="latDisplay">-</span></p>
+          <p>경도: <span id="lonDisplay">-</span></p>
+        </div>
+        <div class="info-box">
+          <h3>🌡️ 현재 날씨</h3>
+          <p>온도: <span id="tempDisplay">-</span> ℃</p>
+          <p>풍속: <span id="windDisplay">-</span> km/h</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const cityInput = document.getElementById("cityInput");
+      const searchBtn = document.getElementById("searchBtn");
+      const errorMsg = document.getElementById("errorMsg");
+      const resultArea = document.getElementById("resultArea");
+
+      const cityNameDisplay = document.getElementById("cityNameDisplay");
+      const latDisplay = document.getElementById("latDisplay");
+      const lonDisplay = document.getElementById("lonDisplay");
+      const tempDisplay = document.getElementById("tempDisplay");
+      const windDisplay = document.getElementById("windDisplay");
+
+      function resetUI() {
+        errorMsg.style.display = "none";
+        resultArea.style.display = "none";
+      }
+
+      function showError(message) {
+        errorMsg.textContent = message;
+        errorMsg.style.display = "block";
+        resultArea.style.display = "none";
+      }
+
+      async function searchWeather() {
+        const cityName = cityInput.value.trim();
+
+        if (!cityName) {
+          showError("도시 이름을 입력해주세요.");
+          return;
+        }
+
+        // [핵심 추가 포인트] 한글 -> 영어 변환 사전(Dictionary)
+        // API가 한글을 잘 못 찾기 때문에, 우리가 직접 영어로 매핑해줍니다.
+        const cityMapping = {
+          서울: "Seoul",
+          부산: "Busan",
+          인천: "Incheon",
+          대구: "Daegu",
+          대전: "Daejeon",
+          광주: "Gwangju",
+          울산: "Ulsan",
+          제주: "Jeju",
+          제주도: "Jeju",
+          도쿄: "Tokyo",
+          오사카: "Osaka",
+          파리: "Paris",
+          런던: "London",
+          뉴욕: "New York",
+        };
+
+        // 사전에 입력한 한글 도시가 있으면 영어로 변환하고, 없으면 입력한 값 그대로 사용
+        const searchName = cityMapping[cityName] || cityName;
+
+        resetUI();
+        searchBtn.textContent = "검색 중...";
+
+        try {
+          // 변환된 searchName으로 검색하고, 결과 데이터는 한글로 받기 위해 language=ko 설정
+          const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchName)}&count=1&language=ko&format=json`;
+          const geoResponse = await fetch(geoUrl);
+
+          if (!geoResponse.ok) {
+            throw new Error("도시 검색 API 응답에 문제가 있습니다.");
+          }
+
+          const geoData = await geoResponse.json();
+
+          if (!geoData.results || geoData.results.length === 0) {
+            showError("존재하지 않는 도시입니다. 도시 이름을 다시 확인해주세요. (예: 서울, 부산)");
+            return;
+          }
+
+          const targetCity = geoData.results[0];
+          const lat = targetCity.latitude;
+          const lon = targetCity.longitude;
+          const exactName = targetCity.name; // language=ko 덕분에 결과는 'Seoul' 대신 '서울'로 표시됩니다.
+
+          const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+          const weatherResponse = await fetch(weatherUrl);
+
+          if (!weatherResponse.ok) {
+            throw new Error("날씨 API 응답에 문제가 있습니다.");
+          }
+
+          const weatherData = await weatherResponse.json();
+
+          const currentTemp = weatherData.current_weather.temperature;
+          const currentWind = weatherData.current_weather.windspeed;
+
+          cityNameDisplay.textContent = exactName;
+          latDisplay.textContent = lat;
+          lonDisplay.textContent = lon;
+          tempDisplay.textContent = currentTemp;
+          windDisplay.textContent = currentWind;
+
+          resultArea.style.display = "block";
+        } catch (error) {
+          showError("요청 실패: " + error.message);
+        } finally {
+          searchBtn.textContent = "검색";
+        }
+      }
+
+      searchBtn.addEventListener("click", searchWeather);
+
+      cityInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          searchWeather();
+        }
+      });
+    </script>
+  </body>
+</html>
